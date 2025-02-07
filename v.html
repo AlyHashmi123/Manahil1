@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Surprise for Manahil</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: pink;
+            overflow: hidden;
+            position: relative;
+            perspective: 1000px; /* For 3D effect */
+        }
+
+        .heart {
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            background: maroon;
+            clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 50% 82%, 18% 100%, 0% 38%);
+            animation: floatHeart 4s linear infinite;
+        }
+
+        .balloon-heart {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            width: 100px;
+            height: 100px;
+            background: #ff3366;
+            border-radius: 50%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transform: translateX(-50%);
+            clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 50% 82%, 18% 100%, 0% 38%);
+            animation: balloonPop 3s ease-in-out infinite;
+        }
+
+        @keyframes floatHeart {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
+        }
+
+        @keyframes balloonPop {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            50% { transform: translateY(-10px) scale(1.1); opacity: 0.7; }
+            100% { transform: translateY(0) scale(1); opacity: 1; }
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(128, 0, 0, 0.6); /* Maroon-colored shadow */
+            padding: 25px;
+            text-align: center;
+            width: 500px;
+            position: relative;
+            z-index: 10;
+            opacity: 0;
+            transform: translateY(50px) rotateY(0deg);
+            transition: all 0.7s ease-in-out;
+            transform-style: preserve-3d;
+        }
+
+        .card.show {
+            opacity: 1;
+            transform: translateY(0) rotateY(0deg);
+        }
+
+        .card.hidden {
+            display: none;
+        }
+
+        .btn {
+            background: maroon;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(128, 0, 0, 0.5); /* Maroon-colored shadow */
+        }
+
+        .btn:hover {
+            background: darkred;
+            box-shadow: 0 6px 18px rgba(128, 0, 0, 0.7); /* Stronger maroon shadow on hover */
+        }
+
+        .btn:active { 
+            transform: scale(0.95); 
+        }
+
+        #button-container { 
+            display: flex; 
+            justify-content: center; 
+            gap: 20px; 
+            margin-top: 20px; 
+        }
+
+        #no-btn {
+            position: relative;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .visual {
+            width: 50px;
+            height: 50px;
+            background-color: maroon;
+            border-radius: 50%;
+            margin: 10px auto;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.7; }
+        }
+    </style>
+</head>
+<body>
+    <div id="heart-container"></div>
+
+    <!-- Add big round balloon hearts -->
+    <div class="balloon-heart"></div>
+
+    <div class="card show" id="screen1">
+        <h1>Hii Manahilllll 👋</h1>
+        <div class="visual"></div>
+        <button class="btn" onclick="showQuestion()">Click it lovey</button>
+    </div>
+
+    <div class="card hidden" id="screen2">
+        <p>Do you wanna stay wimme and create memories tgt?</p>
+        <div class="visual"></div>
+        <div id="button-container">
+            <button class="btn" onclick="handleYes()">YES</button>
+            <button class="btn" id="no-btn" onclick="moveNoButtonOnce()">NO</button>
+        </div>
+    </div>
+
+    <div class="card hidden" id="sarcasticScreen">
+        <p><strong>Really?</strong> You want to say NO? 🤔</p>
+        <p>Sorry, but there's no option for NO! You're stuck now 😒</p>
+        <button class="btn" onclick="showMessageScreen()">Okay fine, I'll forgive you</button>
+    </div>
+
+    <div class="card hidden" id="screen3">
+        <h2>Thank you for saying YES!</h2>
+        <p>So as you know, I am not really a Valentine person, but this is not really about Valentine's Day either.</p>
+        <p>This is just to let you know that I adore you and want you to myself.</p>
+        <p>Thank you for always ignoring my toxic patterns and treating me with LOVE. It means the world to me, and you are my best person ❤️</p>
+        <button class="btn" onclick="showReassuranceScreen()">Continue</button>
+    </div>
+
+    <div class="card hidden" id="reassuranceScreen">
+        <h2>You are safe here 🫂!</h2>
+        <p id="reassurance-text">Go ahead girliepop💅 👇</p>
+        <br>
+        <button class="btn" onclick="generateReassurance()">Click for more love!</button>
+        <br>
+        <button class="btn" onclick="showExitScreen()">Wanna head out?</button>
+    </div>
+    <div class="card hidden" id="exitScreen" 
+    style="background: url('Us.jpg') center/cover no-repeat; 
+           color: white; 
+           text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7); 
+           padding: 20px; 
+           width: 90%; /* Makes the card wider */
+           max-width: 800px; /* Limits max width for responsiveness */
+           height: 70vh;">
+           <br><br><br>
+   <h2>Thank you for coming by Loveyyy ❤️</h2>
+   <button class="btn" onclick="restart()">Restart</button>
+</div>
+
+
+
+    <div class="card hidden" id="screen4">
+        <h2>Forever and Always, you're my Valentine 💖</h2>
+        <div class="visual"></div>
+        <button class="btn" onclick="restart()">Restart</button>
+    </div>
+
+    <script>
+        let noButton = document.getElementById("no-btn");
+        let interactionCount = 0;
+        let noButtonInteracted = false;
+
+        function showQuestion() {
+            document.getElementById("screen1").classList.replace("show", "hidden");
+            document.getElementById("screen2").classList.replace("hidden", "show");
+        }
+
+        function handleYes() {
+            if (noButtonInteracted) {
+                document.getElementById("screen2").classList.replace("show", "hidden");
+                document.getElementById("sarcasticScreen").classList.replace("hidden", "show");
+            } else {
+                document.getElementById("screen2").classList.replace("show", "hidden");
+                document.getElementById("screen3").classList.replace("hidden", "show");
+            }
+        }
+
+        function showMessageScreen() {
+            document.getElementById("sarcasticScreen").classList.replace("show", "hidden");
+            document.getElementById("screen3").classList.replace("hidden", "show");
+        }
+
+        function showReassuranceScreen() {
+            document.getElementById("screen3").classList.replace("show", "hidden");
+            document.getElementById("reassuranceScreen").classList.replace("hidden", "show");
+        }
+
+        function generateReassurance() {
+            const reassurances = [
+                "You made me feel the best, i could never imagine being this loved by a person, your touch make me feel i that i am loved and taken good care of , i tend to believe i will not let you down and break your trust on me🩷🤍!",
+                "Honestly, I don’t even know where to begin. You’ve made me feel seen and appreciated in ways I never thought possible. Your kindness and understanding have given me so much peace, and it’s something I’ll always be grateful for. I never knew someone could make me feel this valued, and I’m lucky to have you in my life. You've shown me that there's so much beauty in just being accepted as I am. 💖✨",
+                "I know your mind can be really tough on you sometimes, making you see things that aren’t even there. But I need you to know—none of those thoughts change how I see you. To me, you are so incredibly beautiful, inside and out. Not just in the way you look (which, by the way, is stunning), but in the way you laugh, the way you care, the way you light up a room without even trying. I wish you could see yourself the way I see you—because if you did, you'd never doubt your beauty for even a second. And no matter what, I’ll always be here to remind you. 💙✨💫",
+                "For if you’re missing meI know things feel overwhelming right now, and I can see how much your mind is running in circles. But I need you to take a deep breath and remember—you don’t have to have everything figured out. No matter what happens,I believe in you more than you know, and I’ll be right here, walking through it with you, step by step. You’re stronger than you think <3, and I just want you to know—I’m missing you just as much, if not more. I wish I could be there to hold you, to remind you that you’re never alone in this. But even from a distance, I’m with you. Close your eyes and feel it—I’m right there, wrapped around you in every little thought, every memory, every moment we’ve shared. No amount of space or time could ever change that. You’re always in my heart, and I’ll be back with you before you know it. 💖✨",
+                "I know sometimes your mind takes you to places where it’s hard to feel connected, even to the people who love you. But I need you to know—I’m always right here, no matter how far away you feel. I see you, I hear you, I love you exactly as you are. You don’t have to force yourself to be okay for me—I just want you to know that no matter what, I’m not leaving your side. Whenever you're ready, I’ll be right here. Always.💖",
+                "When  everything feels too heavy , and I just want you to know that you don’t have to be strong all the time. It’s okay to cry, to feel, to let it all out. I’m not going anywhere, I’m right here, holding you through it. No matter how fucked up it feels, you’re still you, the person I love, the person I’ll stand beside no matter what. We’ll get through this together. Dw pyaru lovey 🤍",
+                "I know the future can feel uncertain, and sometimes it feels like there is so much unknown ahead. But whatever happens im not going anywhere. We will deal w it no matter what the next chapter holds. You dont have to have it all figured out today. You take things one step at a time, and I’ll be right beside you for each one ,I believe in you and i want you to believe in us. 💖"
+                ,"I want you to know that you are more than enough for me. It’s not about what you do, how you look, or how you feel sometimes, it’s just about you. The way you make me feel loved, the way you light up things around me in ways you might not even realize, it’s all that I need. I don’t need perfection, I j need you. And you’re everything I could ever ask for and more. 🧬❤️"            
+                ,"I know it’s tough when it feels like no one gets you, or when you feel like you’re not being fully understood. But I want you to know—I get you. I see the depth of who you are, even when others might not. You don’t have to explain yourself over and over to me. I’m here to listen, to understand, and to support you through it all. You are so important to me, just as you are. 💙"
+                ,"Nothing , just that i love you with all my heart <3 "
+            ];
+            
+            const randomReassurance = reassurances[Math.floor(Math.random() * reassurances.length)];
+            document.getElementById("reassurance-text").textContent = randomReassurance;
+        }
+
+        function showExitScreen() {
+            document.getElementById("reassuranceScreen").classList.replace("show", "hidden");
+            document.getElementById("exitScreen").classList.replace("hidden", "show");
+        }
+
+        function restart() {
+            window.location.reload();
+        }
+
+        function moveNoButtonOnce() {
+            noButtonInteracted = true;
+            moveNoButton(); // Trigger once when NO is pressed
+        }
+
+        function moveNoButton() {
+            if (!noButtonInteracted) return;
+
+            // Get current position of the button's container
+            let card = document.getElementById("screen2");
+            let cardRect = card.getBoundingClientRect();
+            let buttonRect = noButton.getBoundingClientRect();
+
+            // Add small buffer outside the card boundaries
+            let buffer = 20; // Distance that the button can move outside the card boundaries
+
+            // Calculate random positions slightly outside the card's area
+            let minX = cardRect.left - buffer;
+            let maxX = cardRect.right + buffer - buttonRect.width;
+            let minY = cardRect.top - buffer;
+            let maxY = cardRect.bottom + buffer - buttonRect.height;
+
+            let randomX = Math.random() * (maxX - minX) + minX;
+            let randomY = Math.random() * (maxY - minY) + minY;
+
+            noButton.style.position = "absolute";
+            noButton.style.left = `${randomX}px`;
+            noButton.style.top = `${randomY}px`;
+        }
+
+        // Adding mouse move event listener to make the button jump when the mouse approaches it
+        document.addEventListener("mousemove", (event) => {
+            if (!noButtonInteracted) return; // Only trigger when NO is pressed once
+
+            let buttonRect = noButton.getBoundingClientRect();
+            let mouseX = event.clientX;
+            let mouseY = event.clientY;
+
+            // Check if mouse is close to the "NO" button
+            let distanceX = Math.abs(mouseX - (buttonRect.left + buttonRect.width / 2));
+            let distanceY = Math.abs(mouseY - (buttonRect.top + buttonRect.height / 2));
+
+            // Set a threshold for "approaching"
+            let threshold = 100; // You can adjust this distance for more/less sensitivity
+
+            if (distanceX < threshold && distanceY < threshold) {
+                moveNoButton();
+            }
+        });
+
+        // Create heart animations
+        function createHearts() {
+            const heartContainer = document.getElementById("heart-container");
+            setInterval(() => {
+                let heart = document.createElement("div");
+                heart.classList.add("heart");
+                heart.style.left = Math.random() * 100 + "vw";
+                heart.style.animationDuration = Math.random() * 3 + 2 + "s";
+                heartContainer.appendChild(heart);
+                setTimeout(() => { heart.remove(); }, 4000);
+            }, 300);
+        }
+
+        createHearts();
+    </script>
+</body>
+</html>
